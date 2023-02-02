@@ -2,6 +2,8 @@ package Controller;
 
 import io.javalin.Javalin;
 import io.javalin.http.Context;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * TODO: You will need to write your own endpoints and handlers for your controller. The endpoints you will need can be
@@ -17,6 +19,15 @@ public class SocialMediaController {
     public Javalin startAPI() {
         Javalin app = Javalin.create();
         app.get("example-endpoint", this::exampleHandler);
+        app.post("/register", this::addAccount);
+        app.post("/login", this::loginAccount);
+        app.post("/messages", this:addMessage);
+        app.get("/messages", this::getAllMessages);
+        app.get("messages/{message_id}", this::getMessagebyID);
+        app.delete("messages/{message_id}", this::deleteMessage);
+        app.patch("messages/{message_id}", this::updateMessage);
+        app.get("accounts/{account_id}/messages", this::getMessagebyUser);
+
 
         return app;
     }
