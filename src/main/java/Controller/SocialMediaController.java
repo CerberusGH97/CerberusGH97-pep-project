@@ -85,7 +85,7 @@ public class SocialMediaController {
     }
 
     private void getMessagebyIDHandler(Context ctx){
-        ctx.json()
+        ctx.json(messageService.getMessagebyID(ctx.pathParam("message_id")));
     }
 
     private void deleteMessageHandler(Context ctx){
@@ -97,7 +97,7 @@ public class SocialMediaController {
     }
 
     private void getMessagebyUserHandler(Context ctx){
-
+        ctx.json(messageservice.getMessagebyUser(ctx.pathParam("account_id")));
     }
 
 }
