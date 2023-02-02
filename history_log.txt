@@ -1,0 +1,12 @@
+commit c443f6ae81db3e76c8a743a163e82b95320d009d
+Author: CerberusGH97 <alexstuck7@gmail.com>
+Date:   Thu Feb 2 19:51:32 2023 +0000
+
+    commit
+            modified:   src/main/java/Controller/SocialMediaController.java
+            new file:   src/main/java/DAO/AccountDAO.java
+            new file:   src/main/java/DAO/MessageDAO.java
+            new file:   src/main/java/Service/AccountService.java
+            new file:   src/main/java/Service/MessageService.java
+
+ 5 files changed, 31 insertions(+)

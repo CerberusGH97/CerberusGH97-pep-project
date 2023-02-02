@@ -3,7 +3,12 @@ package Controller;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import Model.Account;
+import Model.Message;
+import Service.AccountService;
 
 /**
  * TODO: You will need to write your own endpoints and handlers for your controller. The endpoints you will need can be
@@ -19,14 +24,14 @@ public class SocialMediaController {
     public Javalin startAPI() {
         Javalin app = Javalin.create();
         app.get("example-endpoint", this::exampleHandler);
-        app.post("/register", this::addAccount);
-        app.post("/login", this::loginAccount);
-        app.post("/messages", this:addMessage);
-        app.get("/messages", this::getAllMessages);
-        app.get("messages/{message_id}", this::getMessagebyID);
-        app.delete("messages/{message_id}", this::deleteMessage);
-        app.patch("messages/{message_id}", this::updateMessage);
-        app.get("accounts/{account_id}/messages", this::getMessagebyUser);
+        app.post("/register", this::addAccountHandler);
+        app.post("/login", this::loginAccountHandler);
+        app.post("/messages", this::addMessageHandler);
+        app.get("/messages", this::getAllMessagesHandler);
+        app.get("messages/{message_id}", this::getMessagebyIDHandler);
+        app.delete("messages/{message_id}", this::deleteMessageHandler);
+        app.patch("messages/{message_id}", this::updateMessageHandler);
+        app.get("accounts/{account_id}/messages", this::getMessagebyUserHandler);
 
 
         return app;
@@ -40,5 +45,59 @@ public class SocialMediaController {
         context.json("sample text");
     }
 
+    private void addAccountHandler(Context ctx) throws JsonProcessingException{
+        ObjectMapper mapper = new ObjectMapper();
+        Account account = mapper.readValue(ctx.body(), Account.class);
+        Account addedAccount = accountService.addAccount(account);
+        if(addedAccount!=null){
+            ctx.json(mapper.writeValueAsString(addedAccount));
+        }else{
+            ctx.status(401);
+        }
+        
+    }
+
+    private void loginAccountHandler(Context ctx) throws JsonProcessingException{
+        ObjectMapper mapper = new ObjectMapper();
+        Account login = mapper.readValue(ctx.body(),Account.class);
+        Account newLogin = accountService.loginAccount(login);
+        if(newLogin!=null){
+            ctx.json(mapper.writeValueAsString(newLogin));
+        }else{
+            ctx.status(401);
+        }
+
+    }
+
+    private void addMessageHandler(Context ctx) throws JsonProcessingException{
+        ObjectMapper mapper = new ObjectMapper();
+        Message message = mapper.readValue(ctx.body(), Message.class);
+        Message addedMessage = messageService.addMessage(message);
+        if(addedMessage!=null){
+            ctx.json(mapper.writeValueAsString(addedMessage));
+        }else{
+            ctx.status(400);
+        }
+    }
+
+    private void getAllMessagesHandler(Context ctx){
+        ctx.json(messageService.getAllMessages());
+    }
+
+    private void getMessagebyIDHandler(Context ctx){
+        ctx.json()
+    }
+
+    private void deleteMessageHandler(Context ctx){
+
+    }
+
+    private void updateMessageHandler(Context ctx){
+
+    }
+
+    private void getMessagebyUserHandler(Context ctx){
+
+    }
 
 }
