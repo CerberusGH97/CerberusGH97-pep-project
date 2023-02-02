@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import Model.Account;
 import Model.Message;
 import Service.AccountService;
+import Service.MessageService;
 
 /**
  * TODO: You will need to write your own endpoints and handlers for your controller. The endpoints you will need can be
@@ -16,6 +17,14 @@ import Service.AccountService;
  * refer to prior mini-project labs and lecture materials for guidance on how a controller may be built.
  */
 public class SocialMediaController {
+
+    AccountService accountService;
+    MessageService messageService;
+
+    public SocialMediaController(){
+        this.accountService = new AccountService();
+        this.messageService = new MessageService();
+    }
     /**
      * In order for the test cases to work, you will need to write the endpoints in the startAPI() method, as the test
      * suite must receive a Javalin object from this method.
@@ -89,7 +98,7 @@ public class SocialMediaController {
     }
 
     private void deleteMessageHandler(Context ctx){
-
+        ctx.json(messageService.deleteMessage(ctx.pathParam("message_id")));
     }
 
     private void updateMessageHandler(Context ctx) throws JsonProcessingException{
