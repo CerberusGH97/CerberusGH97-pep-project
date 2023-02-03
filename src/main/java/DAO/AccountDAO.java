@@ -38,7 +38,7 @@ public class AccountDAO {
     public Account verifyAccount (Account account){
         Connection connection = ConnectionUtil.getConnection();
         try {
-            String sql = "SELECT * FROM Account WHERE username = ?, password=?";
+            String sql = "SELECT * FROM Account WHERE username=? and password=?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
             preparedStatement.setString(1, account.getUsername());

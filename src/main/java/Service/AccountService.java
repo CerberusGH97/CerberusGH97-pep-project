@@ -18,7 +18,6 @@ if(accountfromDB!=null||account.username.length()==0||account.password.length()<
     return accountDAO.insertAccount(account);
 }
 
-    
 }
 
 public Account loginAccount(Account account){

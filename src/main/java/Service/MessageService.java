@@ -6,8 +6,11 @@ import Model.Message;
 public class MessageService {
     private MessageDAO messageDAO;
 
-public MessageService(){
-    messageDAO = new MessageDAO();
+    public MessageService(){
+        messageDAO = new MessageDAO();
+}
+public class addMessage(Message message){
+    
 }
 
     
