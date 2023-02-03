@@ -94,11 +94,13 @@ public class SocialMediaController {
     }
 
     private void getMessagebyIDHandler(Context ctx){
-        ctx.json(messageService.getMessagebyID(ctx.pathParam("message_id")));
+        int message_id = Integer.parseInt(ctx.pathParam("message_id"));
+        ctx.json(messageService.getMessagebyID(message_id));
     }
 
     private void deleteMessageHandler(Context ctx){
-        ctx.json(messageService.deleteMessage(ctx.pathParam("message_id")));
+        int message_id = Integer.parseInt(ctx.pathParam("message_id"));
+        ctx.json(messageService.deleteMessage(message_id));
     }
 
     private void updateMessageHandler(Context ctx) throws JsonProcessingException{
@@ -114,7 +116,8 @@ public class SocialMediaController {
     }
 
     private void getMessagebyUserHandler(Context ctx){
-        ctx.json(messageservice.getMessagebyUser(ctx.pathParam("account_id")));
+        int account_id = Integer.parseInt(ctx.pathParam("account_id"));
+        ctx.json(messageService.getMessagebyUser(account_id));
     }
 
 }
