@@ -11,7 +11,14 @@ public class AccountService {
     }
 
 public Account addAccount(Account account){
+Account accountfromDB = this.accountDAO.verifyAccount(account);
+if(accountfromDB!=null||account.username.length()==0||account.password.length()<4){
+    return null;
+}else{
     return accountDAO.insertAccount(account);
+}
+
+    
 }
 
 public Account loginAccount(Account account){
