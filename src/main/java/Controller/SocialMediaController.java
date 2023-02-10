@@ -2,8 +2,11 @@ package Controller;
 
 import io.javalin.Javalin;
 import io.javalin.http.Context;
+
+import java.sql.SQLException;
+import java.util.List;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import Model.Account;
@@ -16,7 +19,8 @@ import Service.MessageService;
  * found in readme.md as well as the test cases. You should
  * refer to prior mini-project labs and lecture materials for guidance on how a controller may be built.
  */
-public class SocialMediaController {
+
+ public class SocialMediaController {
 
     AccountService accountService;
     MessageService messageService;
@@ -25,6 +29,9 @@ public class SocialMediaController {
         this.accountService = new AccountService();
         this.messageService = new MessageService();
     }
+
+ 
+
     /**
      * In order for the test cases to work, you will need to write the endpoints in the startAPI() method, as the test
      * suite must receive a Javalin object from this method.
@@ -41,8 +48,7 @@ public class SocialMediaController {
         app.delete("messages/{message_id}", this::deleteMessageHandler);
         app.patch("messages/{message_id}", this::updateMessageHandler);
         app.get("accounts/{account_id}/messages", this::getMessagebyUserHandler);
-
-
+        
         return app;
     }
 
@@ -95,13 +101,25 @@ public class SocialMediaController {
 
     private void getMessagebyIDHandler(Context ctx){
         int message_id = Integer.parseInt(ctx.pathParam("message_id"));
-        ctx.json(messageService.getMessagebyID(message_id));
+        Message messagetest = messageService.getMessagebyID(message_id);
+        if(messagetest!=null){
+            ctx.json(messageService.getMessagebyID(message_id));
+        }else{
+            ctx.status(200);
+            ctx.json("");
+        }
+
+        
     }
 
-    private void deleteMessageHandler(Context ctx){
+    private void deleteMessageHandler(Context ctx) throws SQLException {
         int message_id = Integer.parseInt(ctx.pathParam("message_id"));
-        ctx.json(messageService.deleteMessage(message_id));
-    }
+        if(messageService.getNonExistentMessage(message_id).isEmpty()){
+            ctx.status(200);
+            ctx.json("");
+        }else {ctx.json(messageService.deleteMessage(message_id));} 
+        }
+    
 
     private void updateMessageHandler(Context ctx) throws JsonProcessingException{
         ObjectMapper mapper = new ObjectMapper();
@@ -113,6 +131,7 @@ public class SocialMediaController {
         }else{
             ctx.status(400);
         }
+
     }
 
     private void getMessagebyUserHandler(Context ctx){
@@ -120,4 +139,4 @@ public class SocialMediaController {
         ctx.json(messageService.getMessagebyUser(account_id));
     }
 
-}
+ }
